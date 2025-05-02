@@ -1,8 +1,6 @@
 const chat_body = document.querySelector(".chat-body");
 const msg_input = document.querySelector(".msg-input");
 const file_input = document.querySelector("#file-input");
-// const API_KEY= "AIzaSyDwiCY6PVelbEOqvn9bEp3-j4HmHq4LNZI"
-// const API_URL=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDwiCY6PVelbEOqvn9bEp3-j4HmHq4LNZI`;
 
 const toggleBtn = document.getElementById('chat-bot-toggler');
@@ -166,3 +164,21 @@ file_input.addEventListener("change", () => {
 });
 
 document.querySelector("#file-upload").addEventListener("click", () => file_input.click());
+document.querySelector(".chatform").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const userMsg = msg_input.value.trim();
+    if (!userMsg) return;
+
+    userData.message = userMsg;
+    userData.file = { data: null, mime_type: null };
+
+    const userMsgElement = createMessageElement(`
+        <div class="user-msg">
+            <div class="msg-text">${userMsg}</div>
+        </div>`, 'user-msg');
+    chat_body.appendChild(userMsgElement);
+    msg_input.value = "";
+    chat_body.scrollTop = chat_body.scrollHeight;
+
+    generateBotResponse();
+});
